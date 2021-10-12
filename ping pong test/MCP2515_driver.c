@@ -5,14 +5,14 @@
  *  Author: ingvode
  */ 
 
-#include <avr/io.h>
+#include "MCP2515_driver.h"
 
 //READ
 char MCP_read(char adress){
 	PORTB &= !(1<<PB4);
 	
 	//send read instruction
-	SPI_MasterTransmit(0b0011);
+	SPI_MasterTransmit(MCP_READ);
 	_delay_ms(10);
 	SPI_MasterTransmit(adress);
 	char data = SPI_SlaveReceive();
@@ -27,7 +27,7 @@ char MCP_read(char adress){
 void MCP_write(char adress, char text) {
 	PORTB &= !(1<<PB4);
 	
-	SPI_MasterTransmit(0b10);
+	SPI_MasterTransmit(MCP_WRITE);
 	SPI_MasterTransmit(adress);
 	_delay_ms(10);
 	SPI_MasterTransmit(text);
@@ -44,7 +44,7 @@ void MCP_request_to_send(char TXB_number){
 		printf('invalid number');
 	}
 	else{
-		char out=0b01000000|TXB_number;
+		char out=0x80|TXB_number;
 		SPI_MasterTransmit(out);
 	}
 	
@@ -57,7 +57,7 @@ char MCP_read_status(){
 	PORTB &= !(1<<PB4);
 	
 	char status;
-	SPI_MasterTransmit(0b10100000);
+	SPI_MasterTransmit(MCP_READ_STATUS);
 	status=SPI_SlaveReceive();
 	
 	PORTB |= (1<<PB4);
@@ -67,7 +67,7 @@ char MCP_read_status(){
 //BIT MODIFY
 void MCP_bit_modify(char adress, char mask, char data){
 	PORTB &= !(1<<PB4);
-	SPI_MasterTransmit(0b00000101);
+	SPI_MasterTransmit(MCP_BITMOD);
 	SPI_MasterTransmit(adress);
 	SPI_MasterTransmit(mask);
 	SPI_MasterTransmit(data);
@@ -77,6 +77,6 @@ void MCP_bit_modify(char adress, char mask, char data){
 //RESET
 void MCP_reset(){
 	PORTB &= !(1<<PB4);
-	SPI_MasterTransmit(0b11000000);
+	SPI_MasterTransmit(MCP_RESET);
 	PORTB |=(1<<PB4);
 }

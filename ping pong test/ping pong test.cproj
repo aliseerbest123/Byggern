@@ -156,6 +156,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CAN_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="CAN_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="fonts.h">
       <SubType>compile</SubType>
     </Compile>
@@ -166,6 +172,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MCP2515_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCP2515_driver.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="menu.c">

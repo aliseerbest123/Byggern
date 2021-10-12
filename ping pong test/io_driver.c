@@ -120,3 +120,25 @@ void init_IO() {
 	
 	OCR1A = 0b00000001;
 };
+
+int get_down(){
+	uint16_t x = get_joystick_x();
+	uint16_t y = get_joystick_y();
+	
+	joystick_vector vev;
+	direction dir;
+	
+	int temp = 0;
+	
+	vev= get_vector_direction_from_binary(x,y);
+	dir=get_dir_from_joystick_vector(vev,10);
+	if (dir=DOWN)
+	{
+		temp=0;
+		
+	}
+	else{
+		temp=0;
+	}
+	return temp;
+}
