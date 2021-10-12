@@ -48,12 +48,44 @@ int main(void)
 
 	printf("\nRun main, code = %i\n", rand());
 	
+	//OLED_goto_line(0);
+	//OLED_print("1234567891234567");
+	//OLED_pos(4, 0);
+	//OLED_print("how are you");
+	
+	//OLED_print_to_sram("AB", 1, 0);
+	//OLED_draw_from_sram();
+	OLED_draw_point_sram(127,64);
+	
+	
+	while (1) {
+		for (int i = 0; i < 8; i++)
+		{
+			//OLED_goto_line(i);
+			OLED_print_to_sram("0123456789ABCDEF", i, 0);
+			OLED_draw_from_sram();
+			_delay_ms(500);
+		}
+		for (int i = 0; i < 8; i++)
+		{
+			//OLED_goto_line(i);
+			OLED_clear_line_sram(i);
+			OLED_print_emoji_sram(4, i, 50);
+			OLED_draw_from_sram();
+			_delay_ms(500);
+		}
+	}
+	
+	OLED_draw_from_sram();
+	
 	//OLED_set_brightness(100);
-	menu_init();
-	display();
+	//menu_init();
+	
+	
+	//display();
 	
 	//Opp når du klikker høyre, ned når du klikker venstre
-	while (1)
+	while (0)
 	{
 		if (get_btn_right())
 		{

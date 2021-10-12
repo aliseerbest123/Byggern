@@ -13,7 +13,7 @@
 struct node* start = NULL;
 struct node* current;
 struct node* head;
-uint8_t arrow_line=0;
+uint8_t arrow_line = 1;
 
 struct node* new_menu(struct node* menu, char name[], struct node* parent, struct node* next, struct node* prev, struct node* child){
 	strcpy(menu->name, name);
@@ -39,7 +39,7 @@ void menu_init(){
 
 	play_game= new_menu(play_game, "Play Game", NULL, options, NULL, NULL);
 
-	options= new_menu(options, "Options", NULL, high_scores, play_game, NULL);
+	options= new_menu(options, " Options", NULL, high_scores, play_game, NULL);
 
 	high_scores= new_menu(high_scores, "High Scores", NULL, set_difficulty, options, NULL);
 
@@ -63,35 +63,42 @@ struct node* return_to_head(){
 
 void display()
 {
+	OLED_reset();
 	uint8_t current_line = 0;
-	printf("%i", arrow_line);
-	OLED_pos(arrow_line, 10);
+	//printf("%i", arrow_line);
+	OLED_pos(arrow_line, 8);
+	//_delay_ms(100);
 	OLED_print_emoji(0);
-	OLED_pos(current_line, 20);
+	//OLED_pos(current_line, 16);
 	struct node* node;
 	node = head;
 	while (node != NULL) {
-		OLED_print(node->name);
-		node = node->next;
-		OLED_pos(++current_line, 30);
+		OLED_pos(++current_line, 16);
 		_delay_ms(400);
+		//OLED_print(node->name);
+		OLED_print("Georg");
+		OLED_goto_col(16);
+		OLED_print("HI");
+		node = node->next;
+		
 		//OLED_goto_col(8*3);
-		_delay_ms(100);
+		//_delay_ms(100);
 	}
 	return;
 }
 
 void update_display_next(){
 	update_current_next();
-	OLED_clear_line(0);
-	OLED_clear_line(1);
-	OLED_clear_line(2);
-	OLED_clear_line(3);
-	printf("%i", arrow_line);
-	++arrow_line;
-	printf("%i", arrow_line);
+	OLED_reset();
+	//OLED_clear_line(0);
+	//OLED_clear_line(1);
+	//OLED_clear_line(2);
+	//OLED_clear_line(3);
+	//printf("%i", arrow_line);
+	arrow_line++;
+	//printf("%i", arrow_line);
 	uint8_t current_line = 0;
-	printf("%i", arrow_line);
+	//printf("%i", arrow_line);
 	OLED_pos(current_line, 20);
 	struct node* node;
 	node = head;
@@ -99,9 +106,9 @@ void update_display_next(){
 		OLED_print(node->name);
 		node = node->next;
 		OLED_pos(++current_line, 30);
-		_delay_ms(400);
+		_delay_us(1);
 		//OLED_goto_col(8*3);
-		_delay_ms(100);
+		//_delay_ms(100);
 	}
 	OLED_pos(arrow_line, 10);
 	OLED_print_emoji(0);
@@ -110,13 +117,14 @@ void update_display_next(){
 
 void update_display_prev(){
 		update_current_prev();
-		OLED_clear_line(0);
-		OLED_clear_line(1);
-		OLED_clear_line(2);
-		OLED_clear_line(3);
-		printf("%i", arrow_line);
+		//OLED_clear_line(0);
+		//OLED_clear_line(1);
+		//OLED_clear_line(2);
+		//OLED_clear_line(3);
+		OLED_reset();
+		//printf("%i", arrow_line);
 		--arrow_line;
-		printf("%i", arrow_line);
+		//printf("%i", arrow_line);
 		uint8_t current_line = 0;
 		printf("%i", arrow_line);
 		OLED_pos(current_line, 20);
@@ -126,9 +134,9 @@ void update_display_prev(){
 			OLED_print(node->name);
 			node = node->next;
 			OLED_pos(++current_line, 30);
-			_delay_ms(400);
+			_delay_us(100);
 			//OLED_goto_col(8*3);
-			_delay_ms(100);
+			//_delay_us(100);
 		}
 		OLED_pos(arrow_line, 10);
 		OLED_print_emoji(0);

@@ -20,6 +20,9 @@
 #define OLED_Command ((char*)0x1000)
 #define OLED_Data ((char*)0x1200)
 
+
+#define external_ram ((char *)0x1800) // Start address for the SRAM
+
 #ifndef OLED_DRIVER_H_
 #define OLED_DRIVER_H_
 
@@ -36,5 +39,18 @@ void OLED_set_brightness(uint8_t lvl);
 void OLED_print_emoji(uint8_t c);
 void OLED_invert(uint8_t i);
 
+
+void OLED_draw_from_sram();
+void OLED_write_data_to_sram(char c, uint8_t row , uint8_t col);
+void OLED_print_to_sram(char * c, uint8_t row, uint8_t col);
+void OLED_reset_sram();
+void OLED_clear_line_sram(uint8_t line);
+void OLED_print_emoji_sram(uint8_t c, uint8_t row, uint8_t col);
+
+void OLED_draw_point_sram(uint8_t x, uint8_t y);
+void OLED_clear_point_sram(uint8_t x, uint8_t y);
+void OLED_draw_circle(uint8_t x, uint8_t y, uint8_t r, uint8_t clear);
+void OLED_draw_box(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t clear);
+void OLED_draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, uint8_t clear); //not implemented yet
 
 #endif /* OLED_DRIVER_H_ */
