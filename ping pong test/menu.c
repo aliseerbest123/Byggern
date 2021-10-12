@@ -39,7 +39,7 @@ void menu_init(){
 
 	play_game= new_menu(play_game, "Play Game", NULL, options, NULL, NULL);
 
-	options= new_menu(options, " Options", NULL, high_scores, play_game, NULL);
+	options= new_menu(options, "Options", NULL, high_scores, play_game, NULL);
 
 	high_scores= new_menu(high_scores, "High Scores", NULL, set_difficulty, options, NULL);
 
@@ -63,33 +63,40 @@ struct node* return_to_head(){
 
 void display()
 {
-	OLED_reset();
+	//OLED_reset();
+	OLED_reset_sram();
 	uint8_t current_line = 0;
 	//printf("%i", arrow_line);
-	OLED_pos(arrow_line, 8);
+	//OLED_pos(arrow_line, 8);
 	//_delay_ms(100);
-	OLED_print_emoji(0);
 	//OLED_pos(current_line, 16);
 	struct node* node;
 	node = head;
 	while (node != NULL) {
-		OLED_pos(++current_line, 16);
+		++current_line;
+		//OLED_pos(++current_line, 16);
 		_delay_ms(400);
 		//OLED_print(node->name);
-		OLED_print("Georg");
-		OLED_goto_col(16);
-		OLED_print("HI");
+		//OLED_print("Georg");
+		OLED_print_to_sram(node->name,current_line,3);
+		printf("%d",node->name);
+		OLED_draw_from_sram();
+		//OLED_goto_col(16);
+		//OLED_print("HI");
 		node = node->next;
 		
 		//OLED_goto_col(8*3);
 		//_delay_ms(100);
 	}
+	OLED_print_emoji_sram(0,arrow_line,10);
+	OLED_draw_from_sram();
 	return;
 }
 
 void update_display_next(){
 	update_current_next();
-	OLED_reset();
+	//OLED_reset();
+	OLED_reset_sram();
 	//OLED_clear_line(0);
 	//OLED_clear_line(1);
 	//OLED_clear_line(2);
@@ -99,19 +106,22 @@ void update_display_next(){
 	//printf("%i", arrow_line);
 	uint8_t current_line = 0;
 	//printf("%i", arrow_line);
-	OLED_pos(current_line, 20);
+	//OLED_pos(current_line, 20);
 	struct node* node;
 	node = head;
 	while (node != NULL) {
-		OLED_print(node->name);
+		++current_line;
+		OLED_print_to_sram(node->name,current_line,3);
+		OLED_draw_from_sram();
 		node = node->next;
-		OLED_pos(++current_line, 30);
+		//OLED_pos(++current_line, 30);
 		_delay_us(1);
 		//OLED_goto_col(8*3);
 		//_delay_ms(100);
 	}
-	OLED_pos(arrow_line, 10);
-	OLED_print_emoji(0);
+	//OLED_pos(arrow_line, 10);
+	OLED_print_emoji_sram(0,arrow_line,10);
+	OLED_draw_from_sram();
 	return;
 }
 
@@ -121,25 +131,29 @@ void update_display_prev(){
 		//OLED_clear_line(1);
 		//OLED_clear_line(2);
 		//OLED_clear_line(3);
-		OLED_reset();
+		//OLED_reset();
+		OLED_reset_sram();
 		//printf("%i", arrow_line);
 		--arrow_line;
 		//printf("%i", arrow_line);
 		uint8_t current_line = 0;
-		printf("%i", arrow_line);
-		OLED_pos(current_line, 20);
+		//printf("%i", arrow_line);
+		//OLED_pos(current_line, 20);
 		struct node* node;
 		node = head;
 		while (node != NULL) {
-			OLED_print(node->name);
+			++current_line;
+			OLED_print_to_sram(node->name,current_line,3);
+			OLED_draw_from_sram();
 			node = node->next;
-			OLED_pos(++current_line, 30);
+			//OLED_pos(++current_line, 30);
 			_delay_us(100);
 			//OLED_goto_col(8*3);
 			//_delay_us(100);
 		}
-		OLED_pos(arrow_line, 10);
-		OLED_print_emoji(0);
+		//OLED_pos(arrow_line, 10);
+		OLED_print_emoji_sram(0,arrow_line,10);
+		OLED_draw_from_sram();
 		return;
 }
 
@@ -156,11 +170,12 @@ void check_child(){
 	{
 		head=current->child;
 		current=current->child;
-		arrow_line=0;
-		OLED_clear_line(0);
-		OLED_clear_line(1);
-		OLED_clear_line(2);
-		OLED_clear_line(3);
+		arrow_line=1;
+		OLED_reset_sram();
+		//OLED_clear_line(0);
+		//OLED_clear_line(1);
+		//OLED_clear_line(2);
+		//OLED_clear_line(3);
 		display();
 	}
 }
