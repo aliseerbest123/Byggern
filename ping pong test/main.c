@@ -19,7 +19,7 @@
 #include "uart_driver.h"
 //#include "io_driver.h"
 #include "tests.h"
-
+//#include "OLED_driver.h"
 
 int main(void)
 {
@@ -48,6 +48,7 @@ int main(void)
 
 	printf("\nRun main, code = %i\n", rand());
 	
+	
 	//OLED_goto_line(0);
 	//OLED_print("1234567891234567");
 	//OLED_pos(4, 0);
@@ -59,7 +60,12 @@ int main(void)
 	menu_init();
 	display();
 	
-	while (1)
+	/*while (1){
+		print_IO();
+		_delay_ms(400);
+	}*/
+	
+	/*while (1)
 	{
 		/*for (int i = 0; i < 8; i++)
 		{
@@ -68,10 +74,11 @@ int main(void)
 			OLED_draw_from_sram();
 			_delay_ms(500);
 		}*/
-		if (get_btn_right())
+		
+		/*if (get_down())
 		{
-			check_child();
-			//update_display_prev();
+			//check_child();
+			update_display_prev();
 			_delay_ms(200);
 		}
 		else if (get_btn_left())
@@ -79,7 +86,12 @@ int main(void)
 			update_display_next();
 			_delay_ms(200);
 		}
-	}
+		else if (get_btn_right())
+		{
+			check_child();
+		}
+		
+	}*/
 	
 	//spi_slave_init();
 	/*while (1)

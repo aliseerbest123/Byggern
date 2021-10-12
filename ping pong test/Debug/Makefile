@@ -37,6 +37,7 @@ SUBDIRS :=
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../CAN_driver.c \
 ../io_driver.c \
 ../MCP2515_driver.c \
 ../menu.c \
@@ -54,6 +55,7 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+CAN_driver.o \
 io_driver.o \
 MCP2515_driver.o \
 menu.o \
@@ -64,6 +66,7 @@ uart_driver.o \
 main.o
 
 OBJS_AS_ARGS +=  \
+CAN_driver.o \
 io_driver.o \
 MCP2515_driver.o \
 menu.o \
@@ -74,6 +77,7 @@ uart_driver.o \
 main.o
 
 C_DEPS +=  \
+CAN_driver.d \
 io_driver.d \
 MCP2515_driver.d \
 menu.d \
@@ -84,6 +88,7 @@ uart_driver.d \
 main.d
 
 C_DEPS_AS_ARGS +=  \
+CAN_driver.d \
 io_driver.d \
 MCP2515_driver.d \
 menu.d \
@@ -107,6 +112,13 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+./CAN_driver.o: .././CAN_driver.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega162 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.2.209\gcc\dev\atmega162" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
 ./io_driver.o: .././io_driver.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0

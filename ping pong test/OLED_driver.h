@@ -48,5 +48,6 @@ void OLED_clear_line_sram(uint8_t line);
 void OLED_print_emoji_sram(uint8_t c, uint8_t row, uint8_t col);
 
 void OLED_draw_point_sram(uint8_t x, uint8_t y);
+int get_down();
 
 #endif /* OLED_DRIVER_H_ */
