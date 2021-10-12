@@ -48,9 +48,5 @@ void OLED_clear_line_sram(uint8_t line);
 void OLED_print_emoji_sram(uint8_t c, uint8_t row, uint8_t col);
 
 void OLED_draw_point_sram(uint8_t x, uint8_t y);
-void OLED_clear_point_sram(uint8_t x, uint8_t y);
-void OLED_draw_circle(uint8_t x, uint8_t y, uint8_t r, uint8_t clear);
-void OLED_draw_box(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t clear);
-void OLED_draw_line(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, uint8_t clear); //not implemented yet
 
 #endif /* OLED_DRIVER_H_ */
