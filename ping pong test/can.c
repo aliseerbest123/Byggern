@@ -15,9 +15,7 @@ uint8_t mcp2515_init () {
 	// More initialization
 
 	// set loopback mode
-	
-	volatile uint8_t *point = (uint8_t *)MCP_CANCTRL;
-	*point = (1 << REQOP1); // REQOP1 = 6-bit // REQOP<2:0> = 010 = loopback mode
+	void MCP_write(MCP_CANCTRL, (char)(1 << REQOP1)); // REQOP1 = 6-bit // REQOP<2:0> = 010 = loopback mode
 	
 	
 
