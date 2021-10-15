@@ -127,13 +127,27 @@ void OLED_invert(uint8_t i) {
 }
 
 
+// void OLED_draw_from_sram() {
+// 	for (uint8_t line = 0; line < 8; line++) {
+// 		OLED_goto_line(line);
+			
+// 		for (int col = 0; col < 128; col++) {
+// 			OLED_goto_col(col);
+// 			OLED_Data[0] = external_ram[line*128 + col];
+// 		}
+// 	}
+// }
+
 void OLED_draw_from_sram() {
 	for (uint8_t line = 0; line < 8; line++) {
 		OLED_goto_line(line);
 			
 		for (int col = 0; col < 128; col++) {
 			OLED_goto_col(col);
-			OLED_Data[0] = external_ram[line*128 + col];
+			uint8_t byte = external_ram[(8-line)*128 + col]; // get byte
+			byte = (byte * 0x0202020202ULL & 0x010884422010ULL) % 1023; // reverse byte
+			
+			OLED_Data[0] = byte; // write byte to screen
 		}
 	}
 }
