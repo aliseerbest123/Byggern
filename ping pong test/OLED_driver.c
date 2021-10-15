@@ -144,7 +144,7 @@ void OLED_draw_from_sram() {
 			
 		for (int col = 0; col < 128; col++) {
 			OLED_goto_col(col);
-			uint8_t byte = external_ram[(8-line)*128 + col]; // get byte
+			uint8_t byte = external_ram[(7-line)*128 + col]; // get byte
 			byte = (byte * 0x0202020202ULL & 0x010884422010ULL) % 1023; // reverse byte
 			
 			OLED_Data[0] = byte; // write byte to screen
