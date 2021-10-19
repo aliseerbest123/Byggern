@@ -22,12 +22,14 @@
 
 typedef struct can_message can_message;
 struct can_message {
-	int ID;
-	int data[8];
-	int length;
+	uint16_t ID;
+	char length;
+	char data[8];
 };
 
-uint8_t mcp2515_init();
+void CAN_init ();
+void CAN_send_message(can_message msg);
+void CAN_recive_message();
 //uint8_t can_read(uint8_t adress);
 // void can_write();
 // uint8_t can_request_to_send();
