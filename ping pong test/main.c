@@ -20,9 +20,10 @@
 //#include "io_driver.h"
 #include "tests.h"
 //#include "OLED_driver.h"
+#include "CAN_driver.h"
 
 int main(void)
-{
+{	
 	time_t t = time(NULL);
 	srand((unsigned) time(&t));
 	
@@ -42,11 +43,24 @@ int main(void)
 	init_UART(MYUBRR);
 	init_IO();
 	OLED_init();
+	CAN_init();
+	
+	printf("\nRun main, code = %i\n", rand());
 	
 	//SRAM_test();
+	
+	can_message msg;
+	msg.ID = 28;
+	msg.length = 2;
+	msg.data[0] = 4;
+	msg.data[1] = 3;
+	
+	
+	CAN_send_message(msg);
+	CAN_recive_message();
 
 
-	printf("\nRun main, code = %i\n", rand());
+
 	
 	
 	//OLED_goto_line(0);
@@ -56,9 +70,9 @@ int main(void)
 	
 	//OLED_print_to_sram("AB", 1, 0);
 	//OLED_draw_from_sram();
-	OLED_draw_point_sram(127,64);
-	menu_init();
-	display();
+	//OLED_draw_point_sram(127,64);
+	//menu_init();
+	//display();
 	
 	/*while (1){
 		print_IO();
@@ -101,7 +115,7 @@ int main(void)
 	PORTB=(1<<PB6);
 	//SPI_SlaveReceive();*/
 	
-	while (1) {
+	while (0) {
 		for (int i = 0; i < 8; i++)
 		{
 			//OLED_goto_line(i);0123456789ABCDEF
@@ -122,25 +136,37 @@ int main(void)
 	OLED_draw_from_sram();
 	
 	//OLED_set_brightness(100);
-	//menu_init();
+	menu_init();
 	
 	
-	//display();
+	display();
 	
 	//Opp når du klikker høyre, ned når du klikker venstre
-	while (0)
+	while (1)
 	{
-		if (get_btn_right())
+		int16_t joy_y = joy_axis_binary_to_decimal(get_joystick_y(), 165);
+		uint8_t threshold = 10;
+		if (joy_y > threshold)
 		{
 			//check_child();
 			update_display_prev();
 			_delay_ms(200);
-		}
-		else if (get_btn_left())
+		} else if (joy_y < -threshold)
 		{
 			update_display_next();
 			_delay_ms(200);
+		} else if (get_btn_right()) {
+			printf("button pressed\n");
+			check_child();
+			_delay_ms(500);
 		}
+	}
+	
+	while (0) {
+//		int16_t joy_axis_binary_to_decimal(uint8_t value, uint8_t elevated_zero);
+		int16_t joy_y = joy_axis_binary_to_decimal(get_joystick_y(), 165);
+		
+		printf("y-joy: %d\n", joy_y);
 	}
 	
 	
@@ -216,7 +242,7 @@ char SPI_SlaveReceive() {
 	return SPDR;
 }
 
-void SPI_MasterTransmit(char cData){
+void SPI_transmission(char cData){
 	SPDR=cData;
 	while (!(SPSR & (1<<SPIF))){}
 }
@@ -228,9 +254,9 @@ char MCP_read(char adress){
 	PORTB &= !(1<<PB4);
 	
 	//send read instruction
-	SPI_MasterTransmit(0b0011);
+	SPI_transmission(0b0011);
 	_delay_ms(10);
-	SPI_MasterTransmit(adress);
+	SPI_transmission(adress);
 	char data = SPI_SlaveReceive();
 	
 	//terminate read instruction
@@ -243,10 +269,10 @@ char MCP_read(char adress){
 void MCP_write(char adress, char text) {
 	PORTB &= !(1<<PB4);
 	
-	SPI_MasterTransmit(0b10);
-	SPI_MasterTransmit(adress);
+	SPI_transmission(0b10);
+	SPI_transmission(adress);
 	_delay_ms(10);
-	SPI_MasterTransmit(text);
+	SPI_transmission(text);
 	
 	//terminate
 	PORTB |= (1<<PB4);
@@ -261,7 +287,7 @@ void MCP_request_to_send(char TXB_number){
 	}
 	else{
 		char out=0b01000000|TXB_number;
-		SPI_MasterTransmit(out);
+		SPI_transmission(out);
 	}
 	
 	PORTB |= (1<<PB4);
@@ -273,7 +299,7 @@ char MCP_read_status(){
 	PORTB &= !(1<<PB4);
 	
 	char status;
-	SPI_MasterTransmit(0b10100000);
+	SPI_transmission(0b10100000);
 	status=SPI_SlaveReceive();
 	
 	PORTB |= (1<<PB4);
@@ -283,16 +309,16 @@ char MCP_read_status(){
 //BIT MODIFY
 void MCP_bit_modify(char adress, char mask, char data){
 	PORTB &= !(1<<PB4);
-	SPI_MasterTransmit(0b00000101);
-	SPI_MasterTransmit(adress);
-	SPI_MasterTransmit(mask);
-	SPI_MasterTransmit(data);
+	SPI_transmission(0b00000101);
+	SPI_transmission(adress);
+	SPI_transmission(mask);
+	SPI_transmission(data);
 	PORTB |=(1<<PB4);
 }
 
 //RESET
 void MCP_reset(){
 	PORTB &= !(1<<PB4);
-	SPI_MasterTransmit(0b11000000);
+	SPI_transmission(0b11000000);
 	PORTB |=(1<<PB4);
 }*/

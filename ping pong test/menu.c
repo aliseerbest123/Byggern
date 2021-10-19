@@ -79,7 +79,7 @@ void display()
 		//OLED_print(node->name);
 		//OLED_print("Georg");
 		OLED_print_to_sram(node->name,current_line,3);
-		printf("%d",node->name);
+		//printf("%d",node->name);
 		OLED_draw_from_sram();
 		//OLED_goto_col(16);
 		//OLED_print("HI");
@@ -176,6 +176,7 @@ void check_child(){
 		//OLED_clear_line(1);
 		//OLED_clear_line(2);
 		//OLED_clear_line(3);
+		_delay_ms(1);
 		display();
 	}
 }
