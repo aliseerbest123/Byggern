@@ -9,13 +9,13 @@
 
 void enable_motor_encoder()
 {
-	//set EN-port p� shield, MJ1
+	// set EN-port on shield, MJ1
 
-	//PIOD P10=DIR
-	//port D p9=EN
-	//port D p2=select
-	//port D p1=!RST
-	//port D p0=!OE
+	// PIOD P10 = DIR
+	// port D p9 = EN
+	// port D p2 = select
+	// port D p1 = !RST
+	// port D p0 = !OE
 
 	PMC->PMC_PCER1 |= PMC_PCER1_PID38;
 	PMC->PMC_PCER0 |= PMC_PCDR0_PID14;
@@ -56,20 +56,7 @@ void enable_motor_encoder()
 	PIOC->PIO_ODR |= PIO_ODR_P6;
 	PIOC->PIO_ODR |= PIO_ODR_P7;
 	PIOC->PIO_ODR |= PIO_ODR_P8;
-
-	//Sette MJ2 til input...
-	// selecting DIR, MJ1
-	//litt rart, men sette verider p� DA1?, MJX
-
-	//DACC setup
 }
-
-//DACC
-
-//enable channel
-//select
-// pin 38, enable klokke
-//DAC1
 
 void test_motor()
 {
@@ -99,7 +86,6 @@ void joystick_movement(int8_t x_joy)
 
 uint16_t feedback_encoder()
 {
-	//printf("here");
 	PIOD->PIO_SODR |= PIO_SODR_P1;
 	PIOD->PIO_CODR |= PIO_CODR_P0;
 	PIOD->PIO_CODR |= PIO_CODR_P2;
@@ -189,8 +175,6 @@ int16_t pid_controller(int32_t reference, int32_t state, PID_DATA *pid)
 	else if (return_value < -INT16_MAX)
 		return_value = -INT16_MAX;
 
-	// printf("Error = %d, p_term = %d, total = %d, i_term = %d\r", error, p_term,return_value);
-
 	return return_value;
 }
 
@@ -204,7 +188,6 @@ void _elay_ms(int t)
 
 void set_motor(int32_t speed)
 {
-	// printf("Speed = %5d\r", speed);
 	uint16_t threshold = 0;
 	PIOD->PIO_SODR |= PIO_PER_P9;
 	if (speed > 0)
@@ -214,18 +197,6 @@ void set_motor(int32_t speed)
 
 	DACC->DACC_CDR = DACC_CDR_DATA(abs(speed) + 400);
 }
-
-/*PID_DATA * pid_init(int32_t p, int32_t i, int32_t d) {
-	PID_DATA* pid;
-	pid->p = p;
-	pid->i = i;
-	pid->d = d;
-	
-	pid->integral_sum_error = 0;
-	pid->last_state_value = 0;
-	
-	return pid;
-}*/
 
 PID_DATA pid_init(int32_t p, int32_t i, int32_t d)
 {

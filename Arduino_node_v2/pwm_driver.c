@@ -15,11 +15,13 @@ void pwm_init()
 	// caution: before using PWM, enable PWM clock in Power Managment Controller (PMC)
 	PMC->PMC_PCER1 |= PMC_PCER1_PID36;		  // PWM, Table 9-1
 	PWM->PWM_CLK = DIVA | PWM_CLK_PREA(PREA); // set clock freq = clkA / DIVA
+
 	// You can see channel ID = 5 for PMC in Table 9-1.
 	REG_PWM_CMR5 = CLKA | PWM_CMR_CPOL;				   // Set clock properties. We here use clock A and flip signal
 	REG_PWM_CPRD5 = channel_period_counter;			   // set period
 	REG_PWM_CDTY5 = channel_period_counter * 1.5 / 20; // set duty cycle to mid value
-	PWM->PWM_ENA = PWM_ENA_CHID5;
+
+	PWM->PWM_ENA = PWM_ENA_CHID5; // Enable channel 5
 }
 
 void pwm_set_relative_duty(int8_t percentage)
