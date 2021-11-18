@@ -9,7 +9,7 @@
 
 void play_pong(uint8_t x_speed_ball)
 {
-	printf("helllo gamers");
+	printf("Playing Pong");
 	PONG_PLAYER player_1 = {4, 64 / 2, 1, 10, 1};
 	PONG_PLAYER player_2 = {128 - 1 - 4, 64 / 2, 1, 10, 1};
 

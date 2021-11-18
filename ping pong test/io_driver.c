@@ -7,27 +7,6 @@
 
 #include "io_driver.h"
 
-/*int16_t binary_to_decimal_range(uint8_t input_binary, uint8_t min_out, uint8_t max_out, uint8_t max_in, uint8_t elevated_zero) {
-	if (input_binary >= elevated_zero) {
-		input_binary -= elevated_zero;
-		return (max_out-max_in) / 2 + ((max_out - min_out) / 2 * input_binary) / (max_in - elevated_zero);
-	}
-	return 0;
-	
-	//input_binary -= elevated_zero;
-
-	//if (input_binary >= 0) return (max_out - min_out) * input_binary / (max_in - elevated_zero) + min_out;
-	//return (max_out - min_out) * input_binary / (elevated_zero) + + min_out + (max_out-min_out) / 2;
-};
-
-int16_t convert(uint8_t x) {
-	if (x > 160) {
-		return (100 * (x-160)) / 90;
-	}
-	return (100*(x-160))/160;
-}
-*/
-
 uint8_t slider_binary_to_decimal(uint8_t value)
 {
 	return (100 * value) / 255;
@@ -79,10 +58,8 @@ uint8_t get_btn_right()
 uint8_t get_slider_left()
 {
 	ADC[0] = 0b10000011;
-	//_delay_ms(20);
 	_delay_ms(1);
 	uint8_t value = ADC[0];
-	//_delay_ms(50);
 	return value;
 };
 uint8_t get_slider_right()
@@ -90,7 +67,6 @@ uint8_t get_slider_right()
 	ADC[0] = 0b10000010;
 	_delay_ms(1);
 	uint8_t value = ADC[0];
-	//_delay_ms(1);
 	return value;
 };
 

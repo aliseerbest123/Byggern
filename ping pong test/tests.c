@@ -14,8 +14,6 @@ void SRAM_test(void)
 	uint16_t write_errors = 0;
 	uint16_t retrieval_errors = 0;
 	printf("Starting SRAM test...\n");
-	// rand() stores some internal state, so calling this function in a loop will
-	// yield different seeds each time (unless srand() is called before this function)
 	uint16_t seed = rand();
 	// Write phase: Immediately check that the correct value was stored
 	srand(seed);
@@ -56,15 +54,6 @@ void testPrintf(int i)
 	char c = uart_recieve();
 
 	printf("You wrote: %c\n", c);
-
-	/*					
-		i = (i + 1) % 100;
-		if (i == 1) {
-			//uart_send_new('F');
-			uart_send('F');
-			PORTA ^= 0x1 << PA0;
-		}
-		*/
 }
 
 void enable_Latch()
@@ -96,7 +85,6 @@ void test_controller(uint8_t x_joy, uint8_t y_joy, uint8_t left_slider_binary, u
 	printf("Joystick (x, y, dir) = (%i, %i, %i)\n", vec.x, vec.y, myDir);
 
 	printf("Slider (left, right) = (%i, %i)\n", slider_binary_to_decimal(left_slider_binary), slider_binary_to_decimal(right_slider_binary));
-	//printf("Slider binary (left,right = (%i, %i)\n", left_slider_binary,right_slider_binary );
 }
 
 void test_slider()
@@ -111,18 +99,12 @@ void test_slider()
 	_delay_ms(10);
 
 	uint8_t left_slider_binary = ext_adc[0]; // sett riktig verdi
-	//printf("Left slider = %i\n", binary_to_decimal_range(0, 100, left_slider_binary, 0xFF));
 
 	printf("Left slider = %i\n", left_slider_binary);
 }
 
 void slider_setup_testing()
 {
-	/*	volatile char *my_pointer = (char *) 0x60;
-	
-	my_pointer[0] |=   0b00000010;
-	my_pointer[0] &= !(0b00000001);
-*/
 	DDRD |= (1 << PD5); // set pin D5 to output
 
 	// mode set CTC

@@ -14,10 +14,7 @@ char MCP_read(char adress)
 
 	//send read instruction
 	SPI_transmission(MCP_READ);
-	//_delay_ms(10);
-
 	SPI_transmission(adress);
-	//printf("hel2lo I am here \n");
 
 	char data = SPI_transmission(0xFF);
 
@@ -26,8 +23,6 @@ char MCP_read(char adress)
 
 	return data;
 }
-
-// 0000 0011 0000 1010
 
 //WRITE
 void MCP_write(char adress, char text)
@@ -90,5 +85,4 @@ void MCP_reset()
 	PORTB &= ~(1 << PB4);
 	SPI_transmission(MCP_RESET);
 	PORTB |= (1 << PB4);
-	//_delay_ms(10);
 }

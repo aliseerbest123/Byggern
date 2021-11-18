@@ -39,7 +39,6 @@ void OLED_init()
 	write_c(0xaf); // display on
 
 	_delay_ms(10);
-	//write_c(0xa5);
 	OLED_pos(0, 0);
 	OLED_reset();
 	OLED_reset_sram();
@@ -85,21 +84,13 @@ void OLED_clear_line(uint8_t line)
 	{
 		OLED_goto_col(i);
 		OLED_Data[0] = 0b00000000; // clears col on page
-								   //_delay_ms(5);
-								   //OLED_write_data('D');
 	}
 }
 
 void OLED_pos(uint8_t row, uint8_t col)
 {
-	//OLED_goto_line(row);
-	//OLED_goto_col(col);
-
 	write_c(0xB0 | row);
 	_delay_us(1);
-
-	//write_c(0b00001111);
-	//write_c(0b00010000);
 
 	write_c(0x00 | (col & 0b00001111));
 	write_c(0b00010000 | ((col & 0b11110000) >> 4));
@@ -108,13 +99,9 @@ void OLED_pos(uint8_t row, uint8_t col)
 
 void volatile OLED_write_data(char c)
 {
-	//OLED_pos(0,0);
-
 	for (int i = 0; i < 8; i++)
 	{
-		//OLED_goto_col(i);
 		unsigned char byte = pgm_read_byte(&(font8[c - 32][i]));
-		//printf("value= %d\n", byte);
 		_delay_us(1);
 		OLED_Data[0] = byte;
 	}
@@ -144,19 +131,8 @@ void OLED_invert(uint8_t i)
 	write_c(0xA6 | i);
 }
 
-/*void OLED_draw_from_sram() {
-	for (uint8_t line = 0; line < 8; line++) {
-		OLED_goto_line(line);
-
-		for (int col = 0; col < 128; col++) {
-			OLED_goto_col(col);
-			OLED_Data[0] = external_ram[line*128 + col];
-		}
-	}
-}*/
-
-void OLED_draw_from_sram()
-{ // flipped
+void OLED_draw_from_sram() // we flip the screen output due to bug
+{
 	for (uint8_t line = 0; line < 8; line++)
 	{
 		OLED_goto_line(line);

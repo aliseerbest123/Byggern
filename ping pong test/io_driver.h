@@ -36,7 +36,6 @@ enum direction
 	NEUTRAL,
 };
 
-//int16_t binary_to_decimal_range(uint8_t input_binary, uint8_t min_out, uint8_t max_out, uint8_t max_in, uint8_t elevated_zero);
 uint8_t slider_binary_to_decimal(uint8_t value);
 int16_t joy_axis_binary_to_decimal(uint8_t value, uint8_t elevated_zero);
 joystick_vector get_vector_direction_from_binary(uint8_t x, uint8_t y);

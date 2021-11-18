@@ -21,13 +21,6 @@ void Joystick_send_pos()
 	pos.length = 2;
 	pos.data[0] = vev.x;
 	pos.data[1] = vev.y;
-	//strcpy(pos.data,vev);
-
-	/*can_message y_pos;
-	y_pos.ID=2;
-	y_pos.length=1;
-	strcpy(y_pos.data,vev.y);*/
 
 	CAN_send_message(pos);
-	//CAN_send_message(y_pos);
 }

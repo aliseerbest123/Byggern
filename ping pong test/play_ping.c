@@ -37,8 +37,6 @@ void play_ping(int16_t ID)
 
 		_delay_ms(50);
 		if (get_btn_left())
-		{
 			break;
-		}
 	}
 }

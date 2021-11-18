@@ -32,9 +32,5 @@ struct can_message
 void CAN_init();
 void CAN_send_message(can_message msg);
 int CAN_recive_message(can_message *msg, uint16_t id);
-//uint8_t can_read(uint8_t adress);
-// void can_write();
-// uint8_t can_request_to_send();
-// void can_
 
 #endif
