@@ -18,7 +18,7 @@ char MCP_read(char adress){
 	SPI_transmission(adress);
 	//printf("hel2lo I am here \n");
 	
-	char data = SPI_transmission(0);
+	char data = SPI_transmission(0xFF);
 	
 	//terminate read instruction
 	PORTB |= (1<<PB4);
@@ -63,7 +63,7 @@ char MCP_read_status(){
 	
 	char status;
 	SPI_transmission(MCP_READ_STATUS);
-	status = SPI_transmission(0);
+	status = SPI_transmission(0xFF);
 	
 	PORTB |= (1<<PB4);
 	return status;

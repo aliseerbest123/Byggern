@@ -18,6 +18,7 @@
 #include "io_driver.h"
 #include "uart_driver.h"
 #include "menu.h"
+#include "CAN_driver.h"
 
 #ifndef INCFILE1_H_
 #define INCFILE1_H_
@@ -30,5 +31,6 @@ void test_slider();
 void slider_setup_testing();
 void test_OLED();
 void print_IO();
+void test_CAN();
 
 #endif /* INCFILE1_H_ */

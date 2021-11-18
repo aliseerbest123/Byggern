@@ -171,6 +171,12 @@
     <Compile Include="io_driver.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Joystick.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Joystick.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="MCP2515_driver.c">
       <SubType>compile</SubType>
     </Compile>
@@ -187,6 +193,30 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="OLED_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="play_ping.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="play_ping.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="pong_ball.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="pong_ball.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="pong_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="pong_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="pong_player.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="pong_player.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="SPI_driver.c">

@@ -20,12 +20,16 @@
 //#include "io_driver.h"
 #include "tests.h"
 //#include "OLED_driver.h"
-#include "CAN_driver.h"
+//#include "CAN_driver.h"
+#include "Joystick.h"
 
 int main(void)
-{	
-	time_t t = time(NULL);
-	srand((unsigned) time(&t));
+{
+	// enable interrupts
+	SREG |= 1 << 7;
+	DDRD &= ~(1 << PD2); // tester å enable interrupts
+	
+	//_SFR_IO8(0x3F)
 	
 	// Init sram
 	DDRA |= (1 << PA0);
@@ -41,26 +45,131 @@ int main(void)
 	// end init
 	
 	init_UART(MYUBRR);
+	printf("\n\nRun main:\n");
 	init_IO();
 	OLED_init();
 	CAN_init();
+	menu_init();
+	display();
 	
-	printf("\nRun main, code = %i\n", rand());
+	while (1)
+	{
+		int16_t joy_y = joy_axis_binary_to_decimal(get_joystick_y(), 165);
+		uint8_t threshold = 10;
+		if (joy_y > threshold)
+		{
+			//check_child();
+			update_display_prev();
+			_delay_ms(200);
+		} else if (joy_y < -threshold)
+		{
+			update_display_next();
+			_delay_ms(200);
+			} else if (get_btn_right()) {
+			printf("button pressed\n");
+			check_child();
+			_delay_ms(500);
+		}
+		else if (get_btn_left())
+		{
+			go_back();
+			_delay_ms(500);
+		}
+	}
+		
 	
+	while(0) {
+		can_message m;
+		CAN_recive_message(&m, 0);
+		
+		printf("CAN ID = %d\n", m.ID);
+		printf("CAN length = %d\n", m.length);
+		printf("CAN message = %s\n", (m.data));
+		_delay_ms(100);
+	};
+	
+	printf("hello how are we\n");
+	OLED_reset_sram();
+	while (1) {
+		for (int i = 0; i < 8; i++)
+		{
+			//OLED_goto_line(i);0123456789ABCDEF
+			OLED_print_to_sram("JESUS<3DEG", i, 0);
+			OLED_draw_from_sram();
+			_delay_ms(500);
+		}
+		for (int i = 0; i < 8; i++)
+		{
+			//OLED_goto_line(i);
+			OLED_clear_line_sram(i);
+			OLED_print_emoji_sram(4, i, 50);
+			OLED_draw_from_sram();
+			_delay_ms(500);
+		}
+	}
+	
+	
+	int i = 0;
+	int a = 0;
+	while (1)
+	{
+		i = (i + 2)%21;
+		if (i == a) {
+			printf("Send pos: %d\n", i);
+			(a++)%20;
+		}
+		_delay_ms(1);
+		Joystick_send_pos();
+		//_delay_ms(50);
+		can_message msg;
+		msg.ID = 1;
+		msg.data[0] = get_btn_right();
+// 		char j = slider_binary_to_decimal(get_slider_right());
+// 		printf("slider = %d\n", j);
+		msg.data[1] = slider_binary_to_decimal(get_slider_right());
+		msg.length = 2;
+		
+		printf("BTN = %d, Right slider value = %d\n", msg.data[0], msg.data[1]);
+		CAN_send_message(msg);
+		
+		
+		_delay_ms(50);
+	}
+	
+	while(1) {
+		printf("Send msg (%d):\n", i++);
+		
+		can_message msg;
+		msg.ID = 8;
+		msg.length = 5;
+		strcpy(msg.data, "Alise");
+			
+		CAN_send_message(msg);
+		
+		printf("Message '%s' was sent\n", msg.data);
+		
+		_delay_ms(2000);
+	}
+	
+	while (1) {
+
+		can_message msg = {0};
+		if(CAN_recive_message(&msg, 0)){
+			
+			//printf("Damaskus");
+			printf("Message received: id:%d, len:%d, msg:%s\n", msg.ID, msg.length, msg.data);
+			
+		} else {
+			printf("no bytes received\n");
+		}
+		_delay_ms(300);
+	}
+	// while(1);
 	//SRAM_test();
 	
-	can_message msg;
-	msg.ID = 28;
-	msg.length = 2;
-	msg.data[0] = 4;
-	msg.data[1] = 3;
+	//test_CAN();
+	/*MCP_CNF1 |= */
 	
-	
-	CAN_send_message(msg);
-	CAN_recive_message();
-
-
-
 	
 	
 	//OLED_goto_line(0);
@@ -115,23 +224,7 @@ int main(void)
 	PORTB=(1<<PB6);
 	//SPI_SlaveReceive();*/
 	
-	while (0) {
-		for (int i = 0; i < 8; i++)
-		{
-			//OLED_goto_line(i);0123456789ABCDEF
-			OLED_print_to_sram("JESUS<3DEG", i, 0);
-			OLED_draw_from_sram();
-			_delay_ms(500);
-		}
-		for (int i = 0; i < 8; i++)
-		{
-			//OLED_goto_line(i);
-			OLED_clear_line_sram(i);
-			OLED_print_emoji_sram(4, i, 50);
-			OLED_draw_from_sram();
-			_delay_ms(500);
-		}
-	}
+
 	
 	OLED_draw_from_sram();
 	

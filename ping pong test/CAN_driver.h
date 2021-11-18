@@ -5,6 +5,7 @@
  *  Author: ingvode
  */ 
 
+#define CAN_data_address 0x36 // address that does not write over ID and length
 
 #define F_CPU 4915200 //clockspeed
 #define BAUD 9600
@@ -24,12 +25,12 @@ typedef struct can_message can_message;
 struct can_message {
 	uint16_t ID;
 	char length;
-	char data[8];
+	char data[9]; // space for 8 and '\0'
 };
 
 void CAN_init ();
 void CAN_send_message(can_message msg);
-void CAN_recive_message();
+int CAN_recive_message(can_message * msg, uint16_t id);
 //uint8_t can_read(uint8_t adress);
 // void can_write();
 // uint8_t can_request_to_send();
