@@ -1657,7 +1657,7 @@ Discarded input sections
  .debug_macro   0x00000000      0xd34 score.o
  .debug_macro   0x00000000      0x170 score.o
  .debug_line    0x00000000      0x7ff score.o
- .debug_str     0x00000000    0x53295 score.o
+ .debug_str     0x00000000    0x5328d score.o
  .comment       0x00000000       0x5a score.o
  .debug_frame   0x00000000       0x28 score.o
  .ARM.attributes
@@ -1828,7 +1828,6 @@ Discarded input sections
  .debug_macro   0x00000000      0x27a uart.o
  .debug_macro   0x00000000      0xd34 uart.o
  .debug_macro   0x00000000      0x170 uart.o
- .debug_macro   0x00000000       0x10 uart.o
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m\libgcc.a(_arm_addsubdf3.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m\libgcc.a(_arm_addsubdf3.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m\libgcc.a(_arm_muldivdf3.o)
@@ -2391,7 +2390,7 @@ OUTPUT(Arduino_node_v2.elf elf32-littlearm)
  .debug_ranges  0x00000180       0x18 pwm_driver.o
  .debug_ranges  0x00000198       0x28 uart.o
 
-.debug_macro    0x00000000    0x12879
+.debug_macro    0x00000000    0x12889
  .debug_macro   0x00000000      0x4a3 adc_driver.o
  .debug_macro   0x000004a3      0x8b0 adc_driver.o
  .debug_macro   0x00000d53       0x22 adc_driver.o
@@ -2517,40 +2516,41 @@ OUTPUT(Arduino_node_v2.elf elf32-littlearm)
  .debug_macro   0x000121af      0x35a pwm_driver.o
  .debug_macro   0x00012509       0x1c pwm_driver.o
  .debug_macro   0x00012525      0x354 uart.o
+ .debug_macro   0x00012879       0x10 uart.o
 
-.debug_line     0x00000000     0x4992
+.debug_line     0x00000000     0x498d
  .debug_line    0x00000000      0x81a adc_driver.o
- .debug_line    0x0000081a      0x7bf can_controller.o
- .debug_line    0x00000fd9      0x89a can_interrupt.o
- .debug_line    0x00001873      0x7f9 motor_control.o
- .debug_line    0x0000206c      0x6fe Device_Startup/startup_sam3xa.o
- .debug_line    0x0000276a      0x774 Device_Startup/system_sam3xa.o
- .debug_line    0x00002ede      0x8bf main.o
- .debug_line    0x0000379d      0x3bd printf-stdarg.o
- .debug_line    0x00003b5a      0x6f2 pwm_driver.o
- .debug_line    0x0000424c      0x746 uart.o
+ .debug_line    0x0000081a      0x7bd can_controller.o
+ .debug_line    0x00000fd7      0x89a can_interrupt.o
+ .debug_line    0x00001871      0x7f4 motor_control.o
+ .debug_line    0x00002065      0x6fe Device_Startup/startup_sam3xa.o
+ .debug_line    0x00002763      0x774 Device_Startup/system_sam3xa.o
+ .debug_line    0x00002ed7      0x8bf main.o
+ .debug_line    0x00003796      0x3bd printf-stdarg.o
+ .debug_line    0x00003b53      0x6f2 pwm_driver.o
+ .debug_line    0x00004245      0x748 uart.o
 
-.debug_str      0x00000000    0x54869
- .debug_str     0x00000000    0x53224 adc_driver.o
-                              0x53492 (size before relaxing)
- .debug_str     0x00053224      0x646 can_controller.o
-                              0x4f864 (size before relaxing)
- .debug_str     0x0005386a      0x146 can_interrupt.o
-                              0x5390c (size before relaxing)
- .debug_str     0x000539b0      0x176 motor_control.o
-                              0x4f628 (size before relaxing)
- .debug_str     0x00053b26      0x546 Device_Startup/startup_sam3xa.o
-                              0x4f61a (size before relaxing)
- .debug_str     0x0005406c      0x195 Device_Startup/system_sam3xa.o
-                              0x4f3ad (size before relaxing)
- .debug_str     0x00054201      0x1e8 main.o
+.debug_str      0x00000000    0x54834
+ .debug_str     0x00000000    0x5321c adc_driver.o
+                              0x5348a (size before relaxing)
+ .debug_str     0x0005321c      0x607 can_controller.o
+                              0x4f85d (size before relaxing)
+ .debug_str     0x00053823      0x106 can_interrupt.o
+                              0x53905 (size before relaxing)
+ .debug_str     0x00053929      0x176 motor_control.o
+                              0x4f620 (size before relaxing)
+ .debug_str     0x00053a9f      0x506 Device_Startup/startup_sam3xa.o
+                              0x4f612 (size before relaxing)
+ .debug_str     0x00053fa5      0x195 Device_Startup/system_sam3xa.o
+                              0x4f3a5 (size before relaxing)
+ .debug_str     0x0005413a      0x23a main.o
                               0x53805 (size before relaxing)
- .debug_str     0x000543e9      0x17a printf-stdarg.o
+ .debug_str     0x00054374      0x1ba printf-stdarg.o
                                0x363b (size before relaxing)
- .debug_str     0x00054563      0x203 pwm_driver.o
-                              0x4f63f (size before relaxing)
- .debug_str     0x00054766      0x103 uart.o
-                              0x4f7f7 (size before relaxing)
+ .debug_str     0x0005452e      0x203 pwm_driver.o
+                              0x4f637 (size before relaxing)
+ .debug_str     0x00054731      0x103 uart.o
+                              0x4f7ef (size before relaxing)
 
 .debug_frame    0x00000000      0x72c
  .debug_frame   0x00000000       0x40 adc_driver.o
