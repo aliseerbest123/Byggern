@@ -3,11 +3,11 @@
  *
  * Created: 06.09.2021 11:22:01
  * Author : ingvode
- */ 
+ */
 
 #define F_CPU 4915200 //clockspeed
 #define BAUD 9600
-#define MYUBRR F_CPU/16/BAUD-1
+#define MYUBRR F_CPU / 16 / BAUD - 1
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -27,23 +27,23 @@ int main(void)
 {
 	// enable interrupts
 	SREG |= 1 << 7;
-	DDRD &= ~(1 << PD2); // tester å enable interrupts
-	
+	DDRD &= ~(1 << PD2); // tester ï¿½ enable interrupts
+
 	//_SFR_IO8(0x3F)
-	
+
 	// Init sram
 	DDRA |= (1 << PA0);
 	DDRA = 0xfff;
 	DDRE |= 1 << PE1;
 	DDRC |= 0b1111;
-	
+
 	DDRD |= 1 << PD7; // enable Read
 	DDRD |= 1 << PD6; // enable write
-	
+
 	MCUCR |= (1 << SRE);
-	SFIOR |= (1<<XMM2);
+	SFIOR |= (1 << XMM2);
 	// end init
-	
+
 	init_UART(MYUBRR);
 	printf("\n\nRun main:\n");
 	init_IO();
@@ -51,7 +51,7 @@ int main(void)
 	CAN_init();
 	menu_init();
 	display();
-	
+
 	while (1)
 	{
 		int16_t joy_y = joy_axis_binary_to_decimal(get_joystick_y(), 165);
@@ -61,11 +61,14 @@ int main(void)
 			//check_child();
 			update_display_prev();
 			_delay_ms(200);
-		} else if (joy_y < -threshold)
+		}
+		else if (joy_y < -threshold)
 		{
 			update_display_next();
 			_delay_ms(200);
-			} else if (get_btn_right()) {
+		}
+		else if (get_btn_right())
+		{
 			printf("button pressed\n");
 			check_child();
 			_delay_ms(500);
@@ -76,21 +79,22 @@ int main(void)
 			_delay_ms(500);
 		}
 	}
-		
-	
-	while(0) {
+
+	while (0)
+	{
 		can_message m;
 		CAN_recive_message(&m, 0);
-		
+
 		printf("CAN ID = %d\n", m.ID);
 		printf("CAN length = %d\n", m.length);
 		printf("CAN message = %s\n", (m.data));
 		_delay_ms(100);
 	};
-	
+
 	printf("hello how are we\n");
 	OLED_reset_sram();
-	while (1) {
+	while (1)
+	{
 		for (int i = 0; i < 8; i++)
 		{
 			//OLED_goto_line(i);0123456789ABCDEF
@@ -107,16 +111,16 @@ int main(void)
 			_delay_ms(500);
 		}
 	}
-	
-	
+
 	int i = 0;
 	int a = 0;
 	while (1)
 	{
-		i = (i + 2)%21;
-		if (i == a) {
+		i = (i + 2) % 21;
+		if (i == a)
+		{
 			printf("Send pos: %d\n", i);
-			(a++)%20;
+			(a++) % 20;
 		}
 		_delay_ms(1);
 		Joystick_send_pos();
@@ -124,70 +128,71 @@ int main(void)
 		can_message msg;
 		msg.ID = 1;
 		msg.data[0] = get_btn_right();
-// 		char j = slider_binary_to_decimal(get_slider_right());
-// 		printf("slider = %d\n", j);
+		// 		char j = slider_binary_to_decimal(get_slider_right());
+		// 		printf("slider = %d\n", j);
 		msg.data[1] = slider_binary_to_decimal(get_slider_right());
 		msg.length = 2;
-		
+
 		printf("BTN = %d, Right slider value = %d\n", msg.data[0], msg.data[1]);
 		CAN_send_message(msg);
-		
-		
+
 		_delay_ms(50);
 	}
-	
-	while(1) {
+
+	while (1)
+	{
 		printf("Send msg (%d):\n", i++);
-		
+
 		can_message msg;
 		msg.ID = 8;
 		msg.length = 5;
 		strcpy(msg.data, "Alise");
-			
+
 		CAN_send_message(msg);
-		
+
 		printf("Message '%s' was sent\n", msg.data);
-		
+
 		_delay_ms(2000);
 	}
-	
-	while (1) {
+
+	while (1)
+	{
 
 		can_message msg = {0};
-		if(CAN_recive_message(&msg, 0)){
-			
+		if (CAN_recive_message(&msg, 0))
+		{
+
 			//printf("Damaskus");
 			printf("Message received: id:%d, len:%d, msg:%s\n", msg.ID, msg.length, msg.data);
-			
-		} else {
+		}
+		else
+		{
 			printf("no bytes received\n");
 		}
 		_delay_ms(300);
 	}
 	// while(1);
 	//SRAM_test();
-	
+
 	//test_CAN();
 	/*MCP_CNF1 |= */
-	
-	
-	
+
 	//OLED_goto_line(0);
 	//OLED_print("1234567891234567");
 	//OLED_pos(4, 0);
 	//OLED_print("how are you");
-	
+
 	//OLED_print_to_sram("AB", 1, 0);
 	//OLED_draw_from_sram();
 	//OLED_draw_point_sram(127,64);
 	//menu_init();
 	//display();
-	
+
 	/*while (1){
 		print_IO();
 		_delay_ms(400);
 	}*/
-	
+
 	/*while (1)
 	{
 		/*for (int i = 0; i < 8; i++)
@@ -197,8 +202,8 @@ int main(void)
 			OLED_draw_from_sram();
 			_delay_ms(500);
 		}*/
-		
-		/*if (get_down())
+
+	/*if (get_down())
 		{
 			//check_child();
 			update_display_prev();
@@ -215,7 +220,7 @@ int main(void)
 		}
 		
 	}*/
-	
+
 	//spi_slave_init();
 	/*while (1)
 	{
@@ -223,18 +228,15 @@ int main(void)
 	}
 	PORTB=(1<<PB6);
 	//SPI_SlaveReceive();*/
-	
 
-	
 	OLED_draw_from_sram();
-	
+
 	//OLED_set_brightness(100);
 	menu_init();
-	
-	
+
 	display();
-	
-	//Opp når du klikker høyre, ned når du klikker venstre
+
+	//Opp nï¿½r du klikker hï¿½yre, ned nï¿½r du klikker venstre
 	while (1)
 	{
 		int16_t joy_y = joy_axis_binary_to_decimal(get_joystick_y(), 165);
@@ -244,68 +246,66 @@ int main(void)
 			//check_child();
 			update_display_prev();
 			_delay_ms(200);
-		} else if (joy_y < -threshold)
+		}
+		else if (joy_y < -threshold)
 		{
 			update_display_next();
 			_delay_ms(200);
-		} else if (get_btn_right()) {
+		}
+		else if (get_btn_right())
+		{
 			printf("button pressed\n");
 			check_child();
 			_delay_ms(500);
 		}
 	}
-	
-	while (0) {
-//		int16_t joy_axis_binary_to_decimal(uint8_t value, uint8_t elevated_zero);
+
+	while (0)
+	{
+		//		int16_t joy_axis_binary_to_decimal(uint8_t value, uint8_t elevated_zero);
 		int16_t joy_y = joy_axis_binary_to_decimal(get_joystick_y(), 165);
-		
+
 		printf("y-joy: %d\n", joy_y);
 	}
-	
-	
-	
-	
+
 	/*for (uint8_t i = 0; ; i++) {
 		OLED_invert(i%2);
 		_delay_ms(200);
 	}*/
-	
+
 	//test_OLED();
-	
+
 	//uint8_t i = 0;
-	
+
 	//adresse 0x1567;
-	
+
 	//volatile char *ext_ram = (char *) 0x1400;
-	
+
 	/*while(1){
 	ext_ram[5] = 0b101010101010;}*/
-	
-	
+
 	// SRAM_test();
-	
+
 	//DDRD |= 1 << PD5;
-	
+
 	//while(1) {
 	//	PORTD ^= 1 << 5;
 	//	_delay_ms(10);
 	//}
-	
+
 	//test_slider();
-	
+
 	//PORTB |= 1 << PB1; // enable Read
-	
-	
+
 	//while(1) print_IO();
-	
+
 	/*while(1) { // testing av knapper
 		printf("Hallo = %i\n", i++);
 		printf("Btn_L = %d\n", PINB & (1 << PB0));
 		printf("Btn_R = %d\n", PINB & (1 << PB1));
 		_delay_ms(2000);
 	};*/
-	
-	
+
 	/*while(1) {
 		enable_Latch();
 		//testPrintf(i);
@@ -315,7 +315,6 @@ int main(void)
 		printf("Hello\n");
 	}*/
 }
-
 
 // DRIVER FOR SPI
 /*

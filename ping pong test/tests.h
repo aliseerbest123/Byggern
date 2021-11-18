@@ -3,12 +3,11 @@
  *
  * Created: 21.09.2021 09:47:37
  *  Author: ingvode
- */ 
-
+ */
 
 #define F_CPU 4915200 //clockspeed
 #define BAUD 9600
-#define MYUBRR F_CPU/16/BAUD-1
+#define MYUBRR F_CPU / 16 / BAUD - 1
 
 #include <avr/io.h>
 #include <util/delay.h>

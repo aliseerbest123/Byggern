@@ -3,8 +3,7 @@
  *
  * Created: 12.10.2021 13:39:28
  *  Author: ingvode
- */ 
-
+ */
 
 #ifndef SPI_DRIVER_H_
 #define SPI_DRIVER_H_

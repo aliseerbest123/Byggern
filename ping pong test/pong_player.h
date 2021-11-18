@@ -3,7 +3,7 @@
  *
  * Created: 16.11.2021 09:17:26
  *  Author: trygvru
- */ 
+ */
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -22,8 +22,6 @@ typedef struct PONG_PLAYER
 } PONG_PLAYER;
 
 void draw_player(PONG_PLAYER player);
-void move_player(PONG_PLAYER * player, uint8_t slider);
-
-
+void move_player(PONG_PLAYER *player, uint8_t slider);
 
 #endif /* PONG_PLAYER_H_ */

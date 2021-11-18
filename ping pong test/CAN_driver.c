@@ -3,7 +3,7 @@
  *
  * Created: 12.10.2021 15:07:53
  *  Author: ingvode
- */ 
+ */
 
 #include "CAN_driver.h"
 #include <avr/io.h>
@@ -30,7 +30,7 @@
 	
 	//SKAL LEGGE TIL MER HER VED NESTE LAB!
 	
-	//Setter Mode til slutt fordi vi vil først være i CONFIGURASTION MODE for å konfigurere diverse (Se side 59 om configuration mode).
+	//Setter Mode til slutt fordi vi vil fï¿½rst vï¿½re i CONFIGURASTION MODE for ï¿½ konfigurere diverse (Se side 59 om configuration mode).
 	//MCP_write(MCP_CANCTRL,(char)(0b01000000)); //Set loopback mode.
 
 
@@ -56,28 +56,27 @@
 	//return 0;
 }*/
 
-void CAN_init () {
+void CAN_init()
+{
 	spi_master_init(); // Initialize SPI
-	MCP_reset(); // Send reset - command
+	MCP_reset();	   // Send reset - command
 	_delay_ms(10);
-	
-	if ((  MCP_read( MCP_CANSTAT ) & MODE_MASK ) != MODE_CONFIG ) {
+
+	if ((MCP_read(MCP_CANSTAT) & MODE_MASK) != MODE_CONFIG)
+	{
 		printf("\n\nMCP2515 is NOT in configuration mode after reset !\n");
 	}
-	
-	
+
 	// uint8_t BRP = 3; //17;
 	uint8_t BRP = 17;
 	printf("MYBRR = %d\n", MYUBRR);
-	
 
-// 		BRP = 3
-// 		SJW = 1 * T_q
-// 		PROPAG/PRSEG = 6
-// 		PHASE1 = 4
-// 		PHASE2 = 4
+	// 		BRP = 3
+	// 		SJW = 1 * T_q
+	// 		PROPAG/PRSEG = 6
+	// 		PHASE1 = 4
+	// 		PHASE2 = 4
 
-	
 	// MCP_write(1 | BRP, MCP_CNF1); // set Length = T_q and BRP
 	// MCP_write( (1 << 7) | (0b100 << 3) | 0b110 , MCP_CNF2 ); // BTLMODE determined by CNF3, PS1 length and Propagation length
 	// MCP_write(0b100, MCP_CNF3); // PS2 length
@@ -86,54 +85,59 @@ void CAN_init () {
 	MCP_write(0b10110001, MCP_CNF2);
 	MCP_write(0x03, MCP_CNF1);
 */
-	
-	MCP_bit_modify(MCP_CNF3,0x07,0b00000111);
-	MCP_bit_modify(MCP_CNF2,0xFF,0b10101100);
-	MCP_bit_modify(MCP_CNF1,0xFF,0b00000011);	
+
+	MCP_bit_modify(MCP_CNF3, 0x07, 0b00000111);
+	MCP_bit_modify(MCP_CNF2, 0xFF, 0b10101100);
+	MCP_bit_modify(MCP_CNF1, 0xFF, 0b00000011);
 	// interrupts
 	//MCUCR |= 1 << ISC01;
 	//GICR |= 1 << INT0;
- 	MCP_write(MCP_CANINTE, 0x01);
-	
+	MCP_write(MCP_CANINTE, 0x01);
+
 	MCP_write(MCP_CANCTRL, 0); // REQOP<2:0> = 000 = normal mode
-		
-	if (( MCP_read( MCP_CANSTAT ) & MODE_MASK ) != MODE_NORMAL ) {
+
+	if ((MCP_read(MCP_CANSTAT) & MODE_MASK) != MODE_NORMAL)
+	{
 		printf("\n\nMCP2515 is NOT in normal mode !\n");
 	}
-	
-// 	// set loopback mode
-// 	MCP_write(MCP_CANCTRL, (char)(1 << 6)); // REQOP1 = bit 6 // REQOP<2:0> = 010 = loopback mode
-// 	
-// 	
-// 	//_delay_ms(100);
-// 	if (( MCP_read( MCP_CANSTAT ) & MODE_MASK ) != MODE_LOOPBACK ) {
-// 		printf("\n\nMCP2515 is NOT in loop !\n");
-// 	}
+
+	// 	// set loopback mode
+	// 	MCP_write(MCP_CANCTRL, (char)(1 << 6)); // REQOP1 = bit 6 // REQOP<2:0> = 010 = loopback mode
+	//
+	//
+	// 	//_delay_ms(100);
+	// 	if (( MCP_read( MCP_CANSTAT ) & MODE_MASK ) != MODE_LOOPBACK ) {
+	// 		printf("\n\nMCP2515 is NOT in loop !\n");
+	// 	}
 }
 
-void CAN_send_message(can_message msg){
+void CAN_send_message(can_message msg)
+{
 	// send length
-	MCP_write(MCP_TXB0CTRL+5, msg.length);
+	MCP_write(MCP_TXB0CTRL + 5, msg.length);
 	// send ID
-	MCP_write(MCP_TXB0CTRL+1, msg.ID >> 3);
-	MCP_write(MCP_TXB0CTRL+2, (msg.ID & 0b111) << 5);
-	
+	MCP_write(MCP_TXB0CTRL + 1, msg.ID >> 3);
+	MCP_write(MCP_TXB0CTRL + 2, (msg.ID & 0b111) << 5);
+
 	// send data
-	for (uint8_t i = 0; i < msg.length; i++) {
+	for (uint8_t i = 0; i < msg.length; i++)
+	{
 		MCP_write(CAN_data_address + i, msg.data[i]);
 	}
-	
+
 	MCP_request_to_send(0x1);
 }
 
-int CAN_recive_message(can_message * msg, uint16_t id) {
+int CAN_recive_message(can_message *msg, uint16_t id)
+{
 	//_delay_ms(1);
 	// can_message msg;
-	
-	if(!MCP_read(MCP_CANINTF) & MCP_RX0IF){
-		return 0;	
+
+	if (!MCP_read(MCP_CANINTF) & MCP_RX0IF)
+	{
+		return 0;
 	}
-	
+
 	// get ID
 	int beginning_id = MCP_read(MCP_RXB0SIDH) << 3;
 	int end_id = MCP_read(MCP_RXB0SIDL) >> 5;
@@ -141,30 +145,30 @@ int CAN_recive_message(can_message * msg, uint16_t id) {
 
 	// get length
 	msg->length = MCP_read(MCP_RXB0DLC);
-	
+
 	// get data
-	for(uint8_t i = 0; i < msg->length; i++){
+	for (uint8_t i = 0; i < msg->length; i++)
+	{
 		msg->data[i] = MCP_read(MCP_RXB0D0 + i);
 	}
 	//printf("Ballong");
 	//_delay_ms(10);
 	MCP_bit_modify(MCP_CANINTF, MCP_RX0IF, 0);
 	//printf("Abbor");
-	//_delay_ms(10);	
-// 	printf("My ID = %d\n", msg.ID);
-// 	printf("My length = %d\n", msg.length);
-// 	
-// 	for(int i=0; i < msg.length; i++) printf("My val%d = %d\n", i, msg.data[i]);
-	
+	//_delay_ms(10);
+	// 	printf("My ID = %d\n", msg.ID);
+	// 	printf("My length = %d\n", msg.length);
+	//
+	// 	for(int i=0; i < msg.length; i++) printf("My val%d = %d\n", i, msg.data[i]);
+
 	msg->data[msg->length] = '\0';
 
 	//printf("Citrus");
 	//_delay_ms(10);
 	// return msg;
-	
+
 	return msg->length;
 }
-
 
 /*void CAN_recive_message(){
 	_delay_ms(1);
@@ -264,9 +268,6 @@ char can_read_status() {
 	
 	return result_0;
 }*/
-
-
-
 
 /*int decimal_to_binary(int n) {
 	int return_value = 0;

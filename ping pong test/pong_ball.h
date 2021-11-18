@@ -3,7 +3,7 @@
  *
  * Created: 16.11.2021 09:33:39
  *  Author: trygvru
- */ 
+ */
 
 #include "pong_player.h"
 
@@ -22,8 +22,7 @@ typedef struct PONG_BALL
 } PONG_BALL;
 
 void draw_ball(PONG_BALL ball);
-void move_ball(PONG_BALL * ball, PONG_PLAYER player_1, PONG_PLAYER player_2);
-uint8_t collision(PONG_PLAYER player, PONG_BALL * ball);
-
+void move_ball(PONG_BALL *ball, PONG_PLAYER player_1, PONG_PLAYER player_2);
+uint8_t collision(PONG_PLAYER player, PONG_BALL *ball);
 
 #endif /* PONG_BALL_H_ */

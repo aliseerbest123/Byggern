@@ -3,24 +3,25 @@
  *
  * Created: 21.09.2021 09:51:13
  *  Author: ingvode
- */ 
+ */
 
 #define F_CPU 4915200 //clockspeed
 #define BAUD 9600
-#define MYUBRR F_CPU/16/BAUD-1
+#define MYUBRR F_CPU / 16 / BAUD - 1
 
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#define ADC ((char*)0x1400)
+#define ADC ((char *)0x1400)
 
 #ifndef INCFILE1_H_
 #define INCFILE1_H_
 
 typedef struct joystick_vector joystick_vector;
-struct joystick_vector {
+struct joystick_vector
+{
 	int16_t x;
 	int16_t y;
 };
@@ -28,7 +29,11 @@ struct joystick_vector {
 typedef enum direction direction;
 enum direction
 {
-	LEFT, RIGHT, UP, DOWN, NEUTRAL,
+	LEFT,
+	RIGHT,
+	UP,
+	DOWN,
+	NEUTRAL,
 };
 
 //int16_t binary_to_decimal_range(uint8_t input_binary, uint8_t min_out, uint8_t max_out, uint8_t max_in, uint8_t elevated_zero);
