@@ -161,3 +161,18 @@ void print_IO() {
 	test_controller(x_joy, y_joy, left_slider, right_slider); // (x,y) (left, right)
 	printf("\n");
 }
+
+void test_CAN() {
+	can_message msg;
+	msg.ID = 255;
+	msg.length = 6;
+	strcpy(msg.data, "Hello");
+		
+	CAN_send_message(msg);
+	can_message m;
+	CAN_recive_message(&m, 0);
+		
+	printf("CAN ID = %d\n", m.ID);
+	printf("CAN length = %d\n", m.length);
+	printf("CAN message = %s\n", (m.data));
+}

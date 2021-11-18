@@ -26,6 +26,7 @@ struct node {
 	struct node* child;
 	struct node* parent;
 	char name[16];
+	int16_t ID;
 } node;
 
 
@@ -37,6 +38,7 @@ void update_current_next(); //Oppdaterer current node til neste
 void update_current_prev(); //Oppdaterer current node til forrige
 void check_child(); //Sjekker om vi kan lage en under meny og skriver den ut dersom den finnes.
 //struct node* new_menu(struct node* menu, char* name, struct node* parent, struct node* next, struct node* prev, struct node* child)
+void go_back();
 
 
 

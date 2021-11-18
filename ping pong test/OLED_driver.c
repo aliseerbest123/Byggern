@@ -127,7 +127,7 @@ void OLED_invert(uint8_t i) {
 }
 
 
-void OLED_draw_from_sram() {
+/*void OLED_draw_from_sram() {
 	for (uint8_t line = 0; line < 8; line++) {
 		OLED_goto_line(line);
 
@@ -136,21 +136,21 @@ void OLED_draw_from_sram() {
 			OLED_Data[0] = external_ram[line*128 + col];
 		}
 	}
-}
+}*/
 
-/*void OLED_draw_from_sram() {
+void OLED_draw_from_sram() { // flipped
 	for (uint8_t line = 0; line < 8; line++) {
 		OLED_goto_line(line);
-		
-		for (int col = 127; col >= 0; col--) {
+
+		for (int col = 0; col < 128; col++) {
 			OLED_goto_col(col);
-			uint8_t byte = external_ram[(7-line)*128 + col]; // get byte
-			byte = (byte * 0x0202020202ULL & 0x010884422010ULL) % 1023; // reverse byte
-			
+
+			uint8_t byte = external_ram[(7-line)*128 + (127-col)];
+			byte = reverse_byte(byte);
 			OLED_Data[0] = byte; // write byte to screen
 		}
 	}
-}*/
+}
 
 void OLED_write_data_to_sram(char c, uint8_t row , uint8_t col) {
 	for (int i = 0; i < 8; i++) {
@@ -188,4 +188,63 @@ void OLED_draw_point_sram(uint8_t x, uint8_t y) {
 	uint8_t col = x;
 	
 	external_ram[row*128 + col] |= 1 << (y%8);
+}
+
+void OLED_clear_point_sram(uint8_t x, uint8_t y) {
+	uint8_t row = y / 8;
+	uint8_t col = x;
+	
+	external_ram[row*128 + col] &= ~(1 << (y%8));
+}
+
+void OLED_draw_circle(uint8_t x, uint8_t y, uint8_t r, uint8_t clear) {
+	for (uint8_t iy = y - r; iy < y + r; iy++) {
+		for (uint8_t ix = x - r; ix < x + r; ix++) {
+			if (ix*ix + iy*iy <= r*r && 0 <= ix && ix < 128 && 0 <= iy && iy < 64) {
+				if (clear) {
+					OLED_clear_point_sram(ix, iy);
+					} else {
+					OLED_draw_point_sram(ix, iy);
+				}
+			}
+		}
+	}
+}
+
+void OLED_draw_box(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t clear) {
+	x = max(0, min(127, x));
+	y = max(0, min(63, y));
+	for (uint8_t iy = y; iy < min(y + h, 63); iy++) {
+		for (uint8_t ix = x; ix < min(x + w, 127); ix++) {
+			if (clear) {
+				OLED_clear_point_sram(ix, iy);
+				} else {
+				OLED_draw_point_sram(ix, iy);
+			}
+		}
+	}
+}
+
+/**
+ * Find maximum between two numbers.
+ */
+int max(int num1, int num2)
+{
+    return (num1 > num2 ) ? num1 : num2;
+}
+
+/**
+ * Find minimum between two numbers.
+ */
+int min(int num1, int num2) 
+{
+    return (num1 > num2 ) ? num2 : num1;
+}
+
+
+uint8_t reverse_byte(uint8_t byte) {
+	byte = (byte & 0xF0) >> 4 | (byte & 0x0F) << 4;
+	byte = (byte & 0xCC) >> 2 | (byte & 0x33) << 2;
+	byte = (byte & 0xAA) >> 1 | (byte & 0x55) << 1;
+	return byte;
 }

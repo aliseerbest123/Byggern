@@ -69,16 +69,17 @@ uint8_t get_btn_right() {
 
 uint8_t get_slider_left() {
 	ADC[0] = 0b10000011;
-	_delay_ms(20);
+	//_delay_ms(20);
+	_delay_ms(1);
 	uint8_t value = ADC[0];
-	_delay_ms(50);
+	//_delay_ms(50);
 	return value;
 };
 uint8_t get_slider_right() {
 	ADC[0] = 0b10000010;
-	_delay_ms(20);
+	_delay_ms(1);
 	uint8_t value = ADC[0];
-	_delay_ms(50);
+	//_delay_ms(1);
 	return value;
 };
 
