@@ -8,6 +8,13 @@
 #include "pwm_driver.h"
 #include "sam.h"
 
+/**
+ * \brief Pulse width modulation (PWM) initialization.
+ *
+ * \param void
+ *
+ * \retval void
+ */
 void pwm_init()
 {
 	PIOC->PIO_PDR |= PIO_PDR_P19;	// Disable PIO
@@ -24,6 +31,13 @@ void pwm_init()
 	PWM->PWM_ENA = PWM_ENA_CHID5; // Enable channel 5
 }
 
+/**
+ * \brief Set the duty cycle of the PWM signal between 1/20 and 2/20.
+ *
+ * \param percentage Gives a duty cycle from 1/20 to 2/20 for values between -100 and 100. -100 gives duty cycle of 1/20, 100 gives duty cycle of 2/20 and 0 gives duty cycle of 1.5/20
+ *
+ * \retval void
+ */
 void pwm_set_relative_duty(int8_t percentage)
 {
 	if (percentage > 100)

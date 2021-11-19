@@ -7,6 +7,11 @@
 
 #include "pong_driver.h"
 
+
+
+/**
+ * \brief Main play funciton
+ */
 void play_pong(uint8_t x_speed_ball)
 {
 	printf("helllo gamers");
@@ -58,10 +63,14 @@ void play_pong(uint8_t x_speed_ball)
 	}
 }
 
+
+/**
+ * \brief Print play history
+ */
 print_score_history() {
 	OLED_reset_sram();
 	_delay_ms(20);
-	OLED_print_to_sram('Highscores', 0, 0);
+	OLED_print_to_sram('Play history', 0, 0);
 	for (uint8_t i = 0; i < n_highscore_elements*2; i += 2)
 	{
 		char score[11];

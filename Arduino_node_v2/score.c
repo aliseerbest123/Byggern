@@ -9,6 +9,14 @@
 #include <stdio.h>
 #include "sam.h"
 
+
+/**
+ * \brief Count points for the player
+ *
+ * \param void
+ *
+ * \retval score
+ */
 uint8_t score_handler()
 {
 	if (get_adc() < lower_score_threshold && !IR_blocked)

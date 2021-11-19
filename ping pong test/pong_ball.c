@@ -7,12 +7,20 @@
 
 #include "pong_ball.h"
 
+
+/**
+ * \brief Draws the ball
+ */
 void draw_ball(PONG_BALL ball)
 {
 	//OLED_draw_circle(ball.x_pos, ball.y_pos, ball.r, 0);
 	OLED_draw_box(ball.x_pos - 1, ball.y_pos - 1, 3, 3, 0);
 }
 
+
+/**
+ * \brief Move the ball
+ */
 void move_ball(PONG_BALL *ball, PONG_PLAYER player_1, PONG_PLAYER player_2)
 {
 	int16_t temp_x = ball->x_pos + ball->x_speed;

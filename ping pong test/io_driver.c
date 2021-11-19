@@ -7,32 +7,27 @@
 
 #include "io_driver.h"
 
-/*int16_t binary_to_decimal_range(uint8_t input_binary, uint8_t min_out, uint8_t max_out, uint8_t max_in, uint8_t elevated_zero) {
-	if (input_binary >= elevated_zero) {
-		input_binary -= elevated_zero;
-		return (max_out-max_in) / 2 + ((max_out - min_out) / 2 * input_binary) / (max_in - elevated_zero);
-	}
-	return 0;
-	
-	//input_binary -= elevated_zero;
 
-	//if (input_binary >= 0) return (max_out - min_out) * input_binary / (max_in - elevated_zero) + min_out;
-	//return (max_out - min_out) * input_binary / (elevated_zero) + + min_out + (max_out-min_out) / 2;
-};
-
-int16_t convert(uint8_t x) {
-	if (x > 160) {
-		return (100 * (x-160)) / 90;
-	}
-	return (100*(x-160))/160;
-}
-*/
-
+/**
+ * \brief Coverts from binary between 0 and 255 to decimal value between 0 and 100
+ *
+ * \param value The value to convert from binary
+ *
+ * \retval The converted value between 0 and 100
+ */
 uint8_t slider_binary_to_decimal(uint8_t value)
 {
 	return (100 * value) / 255;
 }
 
+/**
+ * \brief Convert the joystick values to the corresponding values in the range of 0-100
+ *
+ * \param value The value to convert from binary
+ * \param elevated_zero The value to use as the zero point
+ *
+ * \retval The converted value between 0 and 100
+ */
 int16_t joy_axis_binary_to_decimal(uint8_t value, uint8_t elevated_zero)
 {
 	uint8_t devider = (value < elevated_zero) ? elevated_zero : (255 - elevated_zero);
@@ -40,6 +35,15 @@ int16_t joy_axis_binary_to_decimal(uint8_t value, uint8_t elevated_zero)
 	return (100 * (value - elevated_zero)) / devider;
 }
 
+
+/**
+ * \brief Converts binary joystick values to the corresponding values in a joytick_vector 
+ *
+ * \param x value of the x-axis
+ * \param y value of the y-axis
+ *
+ * \retval joystick_vector
+ */
 joystick_vector get_vector_direction_from_binary(uint8_t x, uint8_t y)
 {
 	joystick_vector vec;
@@ -50,6 +54,15 @@ joystick_vector get_vector_direction_from_binary(uint8_t x, uint8_t y)
 	return vec;
 };
 
+
+/**
+ * \brief Get the direction as enum from joystick_vector
+ *
+ * \param vec The joystick_vector to get the direction from
+ * \param threshold The threshold to use for the direction
+ *
+ * \retval The direction as enum
+ */
 direction get_dir_from_joystick_vector(joystick_vector vec, uint8_t threshold)
 {
 	if (vec.x >= threshold && vec.x >= abs(vec.y))
@@ -63,12 +76,20 @@ direction get_dir_from_joystick_vector(joystick_vector vec, uint8_t threshold)
 	return NEUTRAL;
 };
 
+
+/**
+ * \brief Get left button
+ */
 uint8_t get_btn_left()
 {
 	if (PINB & (1 << PB0))
 		return 1;
 	return 0;
 };
+
+/**
+ * \brief Get right button
+ */
 uint8_t get_btn_right()
 {
 	if (PINB & (1 << PB1))
@@ -76,6 +97,10 @@ uint8_t get_btn_right()
 	return 0;
 };
 
+
+/**
+ * \brief Get left slider
+ */
 uint8_t get_slider_left()
 {
 	ADC[0] = 0b10000011;
@@ -85,6 +110,10 @@ uint8_t get_slider_left()
 	//_delay_ms(50);
 	return value;
 };
+
+/**
+ * \brief Get right slider
+ */
 uint8_t get_slider_right()
 {
 	ADC[0] = 0b10000010;
@@ -94,6 +123,10 @@ uint8_t get_slider_right()
 	return value;
 };
 
+
+/**
+ * \brief Get x joystick
+ */
 uint8_t get_joystick_x()
 {
 	ADC[4] = 0b10000001;
@@ -103,6 +136,10 @@ uint8_t get_joystick_x()
 	return x_joy;
 };
 
+
+/**
+ * \brief Get y joystick
+ */
 uint8_t get_joystick_y()
 {
 	ADC[4] = 0b10000000;
@@ -112,6 +149,10 @@ uint8_t get_joystick_y()
 	return y_joy;
 };
 
+
+/**
+ * \brief Init for IO
+ */
 void init_IO()
 {
 	DDRD |= (1 << PD5); // set pin D5 to output
@@ -133,6 +174,10 @@ void init_IO()
 	OCR1A = 0b00000001;
 };
 
+
+/**
+ * \brief Get when down button pressed
+ */
 int get_down()
 {
 	uint16_t x = get_joystick_x();
