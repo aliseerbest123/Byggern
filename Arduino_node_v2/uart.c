@@ -26,15 +26,13 @@ void configure_uart(void)
 {
 	uint32_t ul_sr;
 
-	/*
-Initialize UART ring buffer as empty
-*/
+
+	// Initialize UART ring buffer as empty
 	rx_buffer.head = 0;
 	rx_buffer.tail = 0;
 
-	/*
-Initialize UART communication
-*/
+	//Initialize UART communication
+
 	// Pin configuration
 	// Disable interrupts on Uart receive (URXD) and transmit (UTXD) pins
 	PIOA->PIO_IDR = PIO_PA8A_URXD | PIO_PA9A_UTXD;
