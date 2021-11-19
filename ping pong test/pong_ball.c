@@ -9,6 +9,7 @@
 
 void draw_ball(PONG_BALL ball)
 {
+	//OLED_draw_circle(ball.x_pos, ball.y_pos, ball.r, 0);
 	OLED_draw_box(ball.x_pos - 1, ball.y_pos - 1, 3, 3, 0);
 }
 

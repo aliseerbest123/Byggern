@@ -11,7 +11,8 @@ void uart_send(unsigned char letter)
 {
 
 	while (!(UCSR1A & (1 << UDRE1)))
-	;
+	{
+	}
 
 	UDR1 = letter;
 };
@@ -19,7 +20,8 @@ void uart_send(unsigned char letter)
 char uart_recieve()
 {
 	while (!(UCSR1A & (1 << RXC1)))
-		;
+	{
+	}
 
 	return UDR1;
 };

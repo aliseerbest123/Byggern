@@ -40,7 +40,7 @@ void OLED_print_emoji(uint8_t c);
 void OLED_invert(uint8_t i);
 
 
-void OLED_draw_from_sram();
+void OLED_draw_from_sram(int INVERT_FLAG);
 void OLED_write_data_to_sram(char c, uint8_t row , uint8_t col);
 void OLED_print_to_sram(char * c, uint8_t row, uint8_t col);
 void OLED_reset_sram();

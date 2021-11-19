@@ -23,7 +23,9 @@ char SPI_SlaveReceive()
 {
 	//Wait for reception complete
 	while (!(SPSR & (1 << SPIF)))
-		;
+	{
+		printf("SPSR = %d, SPIF = %d, SPDR = %d\n", SPSR, SPIF, SPDR);
+	}
 	return SPDR;
 }
 
@@ -35,10 +37,12 @@ void SPI_MasterTransmit(char cData)
 	printf("SPDR = %d\n", SPDR);
 	_delay_ms(10);
 	while (!(SPSR & (1 << SPIF)))
-		;
+	{
+	}
 
 	printf("SPDR = %d\n", SPDR);
 	_delay_ms(10);
+	//while(1);
 }
 
 char SPI_transmission(char data)

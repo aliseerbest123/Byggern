@@ -9,7 +9,7 @@
 
 void play_pong(uint8_t x_speed_ball)
 {
-	printf("Playing Pong");
+	printf("helllo gamers");
 	PONG_PLAYER player_1 = {4, 64 / 2, 1, 10, 1};
 	PONG_PLAYER player_2 = {128 - 1 - 4, 64 / 2, 1, 10, 1};
 
@@ -44,10 +44,37 @@ void play_pong(uint8_t x_speed_ball)
 		strcat(score, score2);
 
 		OLED_print_to_sram(score, 0, 3);
-		OLED_draw_from_sram();
+		OLED_draw_from_sram(1);
 		_delay_ms(40);
 
 		if (get_btn_left())
+		{
+			for (uint8_t i = n_highscore_elements*2; i > 1; i--)
+				pong_score_sram[i] = pong_score_sram[i-2];
+			pong_score_sram[0] = score1;
+			pong_score_sram[1] = score2;
 			return;
+		}
+	}
+}
+
+print_score_history() {
+	OLED_reset_sram();
+	_delay_ms(20);
+	OLED_print_to_sram('Highscores', 0, 0);
+	for (uint8_t i = 0; i < n_highscore_elements*2; i += 2)
+	{
+		char score[11];
+		char score1[5];
+		char score2[5];
+		
+		sprintf(score1, "%d", pong_score_sram[i]);
+		sprintf(score2, "%d", pong_score_sram[i+1]);
+		strcpy(score, score1);
+		strcat(score, ":");
+		strcat(score, score2);
+		
+		OLED_print_to_sram(score, i/2 + 1, 3);
+		OLED_draw_from_sram(1);
 	}
 }

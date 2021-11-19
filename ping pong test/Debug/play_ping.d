@@ -18,7 +18,8 @@ play_ping.d play_ping.o: .././play_ping.c .././play_ping.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  .././CAN_driver.h .././MCP2515_driver.h .././SPI_driver.h \
- .././io_driver.h
+ .././io_driver.h .././OLED_driver.h \
+ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h
 
 .././play_ping.h:
 
@@ -65,3 +66,7 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././SPI_driver.h:
 
 .././io_driver.h:
+
+.././OLED_driver.h:
+
+c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h:

@@ -7,10 +7,16 @@
 
 #include "MCP2515_driver.h"
 
-//READ
+/**
+ * \brief Sends a read signal to the CAN controller followed by an adress.
+ *
+ * \param adress adress of the data
+ *
+ * \retval data the data we wished to read
+ */
 char MCP_read(char adress)
 {
-	PORTB &= ~(1 << PB4);
+	PORTB &= ~(1 << PB4); //Sets CS low
 
 	//send read instruction
 	SPI_transmission(MCP_READ);
@@ -19,12 +25,21 @@ char MCP_read(char adress)
 	char data = SPI_transmission(0xFF);
 
 	//terminate read instruction
-	PORTB |= (1 << PB4);
+	PORTB |= (1 << PB4); // Sets CS high
 
 	return data;
 }
 
-//WRITE
+// 0000 0011 0000 1010
+
+/**
+ * \brief Sends a write signal to the CAN controller followed by an adress and at lease one byte of data
+ *
+ * \param adress adress we want to write to
+ * \param text the data we want to send
+ *
+ * \retval void.
+ */
 void MCP_write(char adress, char text)
 {
 	PORTB &= ~(1 << PB4);
@@ -38,7 +53,13 @@ void MCP_write(char adress, char text)
 	PORTB |= (1 << PB4);
 }
 
-//REQUEST TO SEND
+/**
+ * \brief initilize message transimssion
+ *
+ * \param TXB_number indicates which transmit buffer are enabled to send
+ *
+ * \retval void.
+ */
 void MCP_request_to_send(char TXB_number)
 {
 	PORTB &= ~(1 << PB4);
@@ -55,7 +76,13 @@ void MCP_request_to_send(char TXB_number)
 	PORTB |= (1 << PB4);
 }
 
-//READ STATUS
+/**
+ * \brief reads the status of a pin
+ *
+ * \param void
+ *
+ * \retval status the status of the pin.
+ */
 char MCP_read_status()
 {
 	PORTB &= ~(1 << PB4);
@@ -68,7 +95,15 @@ char MCP_read_status()
 	return status;
 }
 
-//BIT MODIFY
+/*
+ * \brief sets or clears individual bits in specific status and control registers
+ *
+ * \param adress adress of the register
+ * \param mask which bit in the register we want to change
+ * \param data what the modified bit is changed to
+ *
+ * \retval void.
+ */
 void MCP_bit_modify(char adress, char mask, char data)
 {
 	PORTB &= ~(1 << PB4);
@@ -79,7 +114,13 @@ void MCP_bit_modify(char adress, char mask, char data)
 	PORTB |= (1 << PB4);
 }
 
-//RESET
+/*
+ * \brief Re-inizilizes the internal registers of the CAN controller and sets configuration mode
+ *
+ * \param void
+ *
+ * \retval void.
+ */
 void MCP_reset()
 {
 	PORTB &= ~(1 << PB4);

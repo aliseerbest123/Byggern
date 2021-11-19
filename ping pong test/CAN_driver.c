@@ -8,6 +8,13 @@
 #include "CAN_driver.h"
 #include <avr/io.h>
 
+/**
+ * \brief Initialization for CAN in Node 1.
+ *
+ * \param void
+ *
+ * \retval void
+ */
 void CAN_init()
 {
 	spi_master_init(); // Initialize SPI
@@ -32,17 +39,15 @@ void CAN_init()
 	{
 		printf("\n\nMCP2515 is NOT in normal mode !\n");
 	}
-
-	// 	// set loopback mode
-	// 	MCP_write(MCP_CANCTRL, (char)(1 << 6)); // REQOP1 = bit 6 // REQOP<2:0> = 010 = loopback mode
-	//
-	//
-	// 	//_delay_ms(100);
-	// 	if (( MCP_read( MCP_CANSTAT ) & MODE_MASK ) != MODE_LOOPBACK ) {
-	// 		printf("\n\nMCP2515 is NOT in loop !\n");
-	// 	}
 }
 
+/**
+ * \brief Send message over CAN.
+ *
+ * \param msg struct containing the message, its ID and its length
+ *
+ * \retval void
+ */
 void CAN_send_message(can_message msg)
 {
 	// send length
@@ -60,6 +65,14 @@ void CAN_send_message(can_message msg)
 	MCP_request_to_send(0x1);
 }
 
+/**
+ * \brief CAN0 Interrupt handler for RX, TX and bus error interrupts
+ *
+ * \param *msg empty message struct to fill with the new message
+ * \param id message ID
+ *
+ * \retval msg->length sucsess(length of message), failure(0)
+ */
 int CAN_recive_message(can_message *msg, uint16_t id)
 {
 	if (!MCP_read(MCP_CANINTF) & MCP_RX0IF)

@@ -22,5 +22,7 @@ pwm_driver.c
 
 score.c
 
+time.c
+
 uart.c
 

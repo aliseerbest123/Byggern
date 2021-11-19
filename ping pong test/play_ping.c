@@ -8,11 +8,17 @@
 #include "play_ping.h"
 #include "CAN_driver.h"
 #include "io_driver.h"
+#include "OLED_driver.h"
 
 void play_ping(int16_t ID)
 {
 	int i = 0;
 	int a = 0;
+	OLED_reset_sram();
+	OLED_print_to_sram("Good Luck!", 1, 3);
+	OLED_print_emoji_sram(4, 3, 60);
+	OLED_draw_from_sram(1);
+	
 
 	while (1)
 	{
@@ -37,6 +43,8 @@ void play_ping(int16_t ID)
 
 		_delay_ms(50);
 		if (get_btn_left())
+		{
 			break;
+		}
 	}
 }

@@ -7,6 +7,13 @@
 
 #include "Joystick.h"
 
+/*
+ * \brief sends the joystick position over CAN
+ *
+ * \param void
+ *
+ * \retval void.
+ */
 void Joystick_send_pos()
 {
 	uint16_t x = get_joystick_x();
